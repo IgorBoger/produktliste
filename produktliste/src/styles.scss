@@ -1,1 +1,7 @@
 @use './product_list_style/index';
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}

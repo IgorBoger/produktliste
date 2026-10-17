@@ -1,13 +1,24 @@
 @use './variables' as v;
 @use './svg';
 
+.main-header,
+.product-table-wrapper,
+.product-detail,
+.product-form {
+    width: 100%;
+    max-width: v.$content-max-width;
+    margin-inline: auto;
+    min-width: 0;
+}
+
 .main-header {
     padding: 24px 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 
-    max-width: 1440px;
+    flex-wrap: wrap;
+    gap: 16px;
 
     &--single {
         justify-content: flex-start;
@@ -22,8 +33,7 @@
 .product-table-wrapper {
     background-color: v.$light-bg;
     padding: 24px;
-    box-sizing: border-box;
-    width: clamp(400px, 100%, 1440px);
+    overflow-x: auto;
 }
 
 .product-table {
@@ -156,18 +166,24 @@ $btn-icons: (
 
 
 .product-detail {
-    width: clamp(400px, 100%, 1440px);
     padding: 20px 24px;
     background-color: v.$light-bg;
 
     &__header {
         display: flex;
         justify-content: space-between;
+        gap: 16px;
+
+        >h1 {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
 
         >div {
             display: flex;
             gap: 8px;
             flex-direction: row;
+            flex-shrink: 0;
         }
     }
 
@@ -191,8 +207,9 @@ $btn-icons: (
 
     dl {
         display: grid;
-        grid-template-columns: auto 1fr;
+        grid-template-columns: auto minmax(0, 1fr);
         gap: 16px;
+        overflow-wrap: anywhere;
     }
 
     dt {
@@ -204,7 +221,6 @@ $btn-icons: (
 }
 
 .product-form {
-    width: clamp(400px, 100%, 1440px);
     padding: 20px 24px;
     background-color: v.$light-bg;
     display: flex;
@@ -238,6 +254,8 @@ $btn-icons: (
 
     input,
     textarea {
+        min-width: 0;
+        max-width: 100%;
         background-color: transparent;
         font-size: 16px;
 
@@ -262,6 +280,8 @@ $btn-icons: (
 
     fieldset {
         width: 100%;
+        min-width: 0;
+        margin: 0;
         position: relative;
         border: none;
 
@@ -278,23 +298,32 @@ $btn-icons: (
 
     &__fieldset--vert {
         display: grid;
-        grid-template-columns: auto 1fr;
+        grid-template-columns: auto minmax(0, 1fr);
         gap: 16px;
 
     }
     
 
     &__fieldset--hori {
-        display: flex;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
         gap: 16px;
     }
     @media (max-width: 768px) {
     &__fieldset--hori {
         display: grid;
-        grid-template-columns: auto 1fr;
+        grid-template-columns: auto minmax(0, 1fr);
         gap: 16px;
 
     }
     }
 
+}
+
+@media (max-width: 480px) {
+    .product-detail dl,
+    .product-form__fieldset--vert,
+    .product-form__fieldset--hori {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
