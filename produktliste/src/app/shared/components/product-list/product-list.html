@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr role="link">
+      <!-- <tr role="link">
         <td>Computermaus</td>
         <td>optisch, USB-Anschluss, schwarz</td>
         <td><span class="badge ok">104</span></td>
@@ -37,7 +37,17 @@
         <td><span class="badge ok">146</span></td>
         <td class="price">18,99</td>
         <td><a class="btn--view" aria-label="Details anzeigen"></a></td>
-      </tr>
+      </tr> -->
+
+      @for (product of list; track product) {
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.stock }}</td>
+          <td>{{ product.price }}</td>
+          <td><a class="btn--view" aria-label="Details anzeigen"></a></td>
+        </tr>
+      }
     </tbody>
   </table>
 </section>
