@@ -1,0 +1,5 @@
+@use '../../../../product_list_style/variables' as v;
+
+.dark-row {
+  background-color: v.$dark-bg;
+}

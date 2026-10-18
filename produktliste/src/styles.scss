@@ -1,7 +1,14 @@
 @use './product_list_style/index';
+.d-none {
+  display: none !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
 
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }

@@ -1,5 +1,14 @@
 import { Component } from '@angular/core';
 
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  specs: string;
+  stock: number;
+  price: number;
+}
+
 @Component({
   imports: [],
   selector: 'main-product-list',
@@ -7,8 +16,10 @@ import { Component } from '@angular/core';
   templateUrl: './product-list.html',
 })
 export class ProductList {
+  // list: Product[] = [];
   list = [
     {
+      id: 1,
       name: 'Gaming Maus',
       description:
         'Eine ergonomische Gaming-Maus mit hoher Präzision und einstellbarer DPI. Ideal für FPS- und MOBA-Spiele, bietet sie eine langlebige Bauweise und komfortable Seitentasten für schnelles Reagieren.',
@@ -17,6 +28,7 @@ export class ProductList {
       price: 29.99,
     },
     {
+      id: 2,
       name: 'Mechanische Tastatur',
       description:
         'Hochwertige mechanische Tastatur mit RGB-Hintergrundbeleuchtung. Die schnellen Switches sorgen für präzise Eingaben und langen Schreibkomfort. Ideal für Gamer und Vielschreiber.',
@@ -25,6 +37,7 @@ export class ProductList {
       price: 79.9,
     },
     {
+      id: 3,
       name: 'HDMI Kabel',
       description:
         'Ein zuverlässiges HDMI 2.1 Kabel, das gestochen scharfe Bilder in 4K und 8K Qualität liefert. Geeignet für Fernseher, Monitore, Konsolen und Projektoren. Unterstützt HDR und hohe Bildwiederholraten.',
@@ -33,6 +46,7 @@ export class ProductList {
       price: 12.99,
     },
     {
+      id: 4,
       name: 'Externe SSD',
       description:
         'Leistungsstarke und kompakte externe SSD für schnelle Datenübertragung. Perfekt für große Dateien, Gaming-Bibliotheken oder als Backup-Lösung. Stoßfestes Gehäuse für den mobilen Einsatz.',
@@ -41,6 +55,7 @@ export class ProductList {
       price: 109.99,
     },
     {
+      id: 5,
       name: 'Bluetooth Kopfhörer',
       description:
         'Kabellose Over-Ear Kopfhörer mit klaren Höhen und kräftigem Bass. Dank 20 Stunden Akkulaufzeit und komfortabler Ohrpolster ideal für lange Musik- oder Gaming-Sessions.',
