@@ -1,8 +1,10 @@
+import { RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
 
 interface Product {
   id: number;
   name: string;
+  slug: string;
   description: string;
   specs: string;
   stock: number;
@@ -10,7 +12,7 @@ interface Product {
 }
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'main-product-list',
   styleUrl: './product-list.scss',
   templateUrl: './product-list.html',
