@@ -20,13 +20,13 @@
           <td class="price">
             @switch (true) {
               @case (product.price > 1000000) {
-                {{ product.price / 1000000 }}mio
+                {{ product.price / 1000000 | currency: 'EUR' : 'symbol' : '1.2-2' : 'de' }}mio
               }
               @case (product.price > 1000) {
-                {{ product.price / 1000 }}k
+                {{ product.price / 1000 | currency: 'EUR' : 'symbol' : '1.2-2' : 'de' }}k
               }
               @default {
-                {{ product.price }}
+                {{ product.price | currency: 'EUR' : 'symbol' : '1.2-2' : 'de' }}
               }
             }
           </td>

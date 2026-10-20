@@ -1,10 +1,12 @@
 import { RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
+import { CurrencyPipe, registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+registerLocaleData(localeDe);
 
 interface Product {
   id: number;
   name: string;
-  slug: string;
   description: string;
   specs: string;
   stock: number;
@@ -12,14 +14,14 @@ interface Product {
 }
 
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, CurrencyPipe],
   selector: 'main-product-list',
   styleUrl: './product-list.scss',
   templateUrl: './product-list.html',
 })
 export class ProductList {
   // list: Product[] = [];
-  list = [
+  list: Product[] = [
     {
       id: 1,
       name: 'Gaming Maus',
