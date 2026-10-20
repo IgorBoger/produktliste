@@ -1,6 +1,6 @@
 import { RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
-import { CurrencyPipe, registerLocaleData } from '@angular/common';
+import { CurrencyPipe, DatePipe, registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe);
 
@@ -11,10 +11,11 @@ interface Product {
   specs: string;
   stock: number;
   price: number;
+  updatedAt: string;
 }
 
 @Component({
-  imports: [RouterLink, CurrencyPipe],
+  imports: [RouterLink, CurrencyPipe, DatePipe],
   selector: 'main-product-list',
   styleUrl: './product-list.scss',
   templateUrl: './product-list.html',
@@ -30,6 +31,7 @@ export class ProductList {
       specs: 'dpi: 6400, cable length: 1.8m, color: Schwarz',
       stock: 120,
       price: 29.99,
+      updatedAt: '2026-10-20',
     },
     {
       id: 2,
@@ -39,6 +41,7 @@ export class ProductList {
       specs: 'switches: Red, connection: USB, color: Schwarz',
       stock: 85,
       price: 79.9,
+      updatedAt: '2026-10-18',
     },
     {
       id: 3,
@@ -48,6 +51,7 @@ export class ProductList {
       specs: 'length: 2m, version: 2.1, color: Schwarz',
       stock: 250,
       price: 12.99,
+      updatedAt: '2026-10-15',
     },
     {
       id: 4,
@@ -57,6 +61,7 @@ export class ProductList {
       specs: 'capacity: 1TB, interface: USB 3.2, color: Silber',
       stock: 60,
       price: 109.99,
+      updatedAt: '2026-10-19',
     },
     {
       id: 5,
@@ -66,6 +71,7 @@ export class ProductList {
       specs: 'battery life: 20h, color: Schwarz, connection: Bluetooth 5.0',
       stock: 150,
       price: 59.95,
+      updatedAt: '2026-10-17',
     },
   ];
 }

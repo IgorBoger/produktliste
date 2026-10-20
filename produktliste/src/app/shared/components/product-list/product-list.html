@@ -7,6 +7,7 @@
         <th>Bestand</th>
         <th>Preis(€)</th>
         <th>Details</th>
+        <th>Zuletzt aktualisiert</th>
       </tr>
     </thead>
     <tbody>
@@ -14,10 +15,10 @@
         <tr role="link" [class.dark-row]="odd" [routerLink]="['/details', product.name]">
           <td>{{ product.name }}</td>
           <td>{{ product.specs }}</td>
-          <td>
+          <td class="text-right">
             <span class="badge ok">{{ product.stock }}</span>
           </td>
-          <td class="price">
+          <td class="price text-right">
             @switch (true) {
               @case (product.price > 1000000) {
                 {{ product.price / 1000000 | currency: 'EUR' : 'symbol' : '1.2-2' : 'de' }}mio
@@ -30,11 +31,12 @@
               }
             }
           </td>
-          <td><a class="btn--view" aria-label="Details anzeigen"></a></td>
+          <td class="text-right"><a class="btn--view" aria-label="Details anzeigen"></a></td>
+          <td class="text-right">{{ product.updatedAt | date: 'dd.MM.yyyy' : undefined : 'de' }}</td>
         </tr>
       } @empty {
         <tr>
-          <td colspan="5">Deine Produktliste ist noch leer.</td>
+          <td colspan="6">Deine Produktliste ist noch leer.</td>
         </tr>
       }
     </tbody>
