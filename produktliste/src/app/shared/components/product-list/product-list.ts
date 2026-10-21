@@ -1,18 +1,9 @@
 import { RouterLink } from '@angular/router';
 import { Component } from '@angular/core';
 import { CurrencyPipe, DatePipe, registerLocaleData } from '@angular/common';
+import { Product } from '../../interfaces/product';
 import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe);
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  specs: string;
-  stock: number;
-  price: number;
-  updatedAt: string;
-}
 
 @Component({
   imports: [RouterLink, CurrencyPipe, DatePipe],
@@ -21,7 +12,6 @@ interface Product {
   templateUrl: './product-list.html',
 })
 export class ProductList {
-  // list: Product[] = [];
   list: Product[] = [
     {
       id: 1,
