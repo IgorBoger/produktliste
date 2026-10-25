@@ -1,7 +1,6 @@
 import { RouterLink } from '@angular/router';
 import { Component, inject } from '@angular/core';
 import { CurrencyPipe, DatePipe, registerLocaleData } from '@angular/common';
-import { Product } from '../../interfaces/product';
 import { Products } from '../../services/products';
 import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe);
@@ -14,5 +13,5 @@ registerLocaleData(localeDe);
 })
 export class ProductList {
   productService = inject(Products);
-  list: Product[] = this.productService.productList;
+  list = this.productService.productList;
 }

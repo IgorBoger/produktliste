@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Product } from '../interfaces/product';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Products {
-  productList: Product[] = [];
+  // productList: Product[] = [];
+  productList = signal<Product[]>([]);
 
-  productDetail: Product = {
+  productDetail = signal<Product>({
     id: 0,
     name: 'n/a',
     description: 'n/a',
@@ -15,17 +16,15 @@ export class Products {
     stock: 0,
     price: 0,
     updatedAt: 'n/a',
-  };
+  });
 
   setProductDetailsByName(name: string) {
-    const tmpProduct = this.productList.find((product) => product.name === name);
-    if (tmpProduct) {
-      this.productDetail = tmpProduct;
-    }
+    const tmpProduct = this.productList().find((product) => product.name === name);
+    if (tmpProduct) this.productDetail.set(tmpProduct);
   }
 
   constructor() {
-    this.productList = [
+    this.productList.set([
       {
         id: 1,
         name: 'Gaming Maus',
@@ -76,6 +75,6 @@ export class Products {
         price: 59.95,
         updatedAt: '2026-10-17',
       },
-    ];
+    ]);
   }
 }

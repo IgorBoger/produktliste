@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (product of list; track product.id; let odd = $odd) {
+      @for (product of list(); track product.id; let odd = $odd) {
         <tr role="link" [class.dark-row]="odd" [routerLink]="['/details', product.name]">
           <td>{{ product.name }}</td>
           <td>{{ product.specs }}</td>
