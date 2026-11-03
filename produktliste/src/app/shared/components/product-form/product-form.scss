@@ -1,0 +1,23 @@
+.product-form__fieldset--hori {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.product-form__field {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .product-form__fieldset--hori {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-form__field {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

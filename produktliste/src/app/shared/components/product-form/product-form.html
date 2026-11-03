@@ -8,6 +8,19 @@
       <legend>Product Information</legend>
       <label for="product-name">Produkt Name:</label>
       <input type="text" id="product-name" formControlName="name" />
+
+      @if (productForm.controls.name.touched) {
+        @if (productForm.controls.name.hasError('required')) {
+          <p class="product-form__error">Fehler:</p>
+          <p class="product-form__error">Bitte gib einen Produktnamen ein.</p>
+        }
+
+        @if (productForm.controls.name.hasError('minlength')) {
+          <p class="product-form__error">Fehler:</p>
+          <p class="product-form__error">Der Produktname muss mindestens 3 Zeichen lang sein.</p>
+        }
+      }
+
       <label for="description">Beschreibung:</label>
       <textarea
         id="description"
@@ -15,19 +28,56 @@
         rows="4"
         formControlName="description"
       ></textarea>
+
+      @if (productForm.controls.description.touched) {
+        @if (productForm.controls.description.hasError('required')) {
+          <p class="product-form__error">Fehler:</p>
+          <p class="product-form__error">Bitte gib eine Beschreibung ein.</p>
+        }
+
+        @if (productForm.controls.description.hasError('minlength')) {
+          <p class="product-form__error">Fehler:</p>
+          <p class="product-form__error">Die Beschreibung muss mindestens 15 Zeichen lang sein.</p>
+        }
+      }
     </fieldset>
     <fieldset class="product-form__fieldset--hori">
       <legend>Stock &amp; Pricing</legend>
-      <label for="stock">Lagerbestand:</label>
-      <input type="number" id="stock" name="stock" formControlName="stock" />
-      <label for="price">Preis pro Stück (€):</label>
-      <input type="number" id="price" name="price" step="0.01" formControlName="price" />
+
+      <div class="product-form__field">
+        <label for="stock">Lagerbestand:</label>
+        <input type="number" id="stock" min="0" step="1" formControlName="stock" />
+
+        @if (productForm.controls.stock.touched) {
+          @if (productForm.controls.stock.hasError('required')) {
+            <p class="product-form__error">Fehler:</p>
+            <p class="product-form__error">Bitte gib einen Lagerbestand ein.</p>
+          }
+
+          @if (productForm.controls.stock.hasError('min')) {
+            <p class="product-form__error">Fehler:</p>
+            <p class="product-form__error">Der Lagerbestand darf nicht negativ sein.</p>
+          }
+        }
+      </div>
+
+      <div class="product-form__field">
+        <label for="price">Preis pro Stück (€):</label>
+        <input type="number" id="price" min="0" step="0.01" formControlName="price" />
+
+        @if (productForm.controls.price.touched) {
+          @if (productForm.controls.price.hasError('required')) {
+            <p class="product-form__error">Fehler:</p>
+            <p class="product-form__error">Bitte gib einen Preis ein.</p>
+          }
+
+          @if (productForm.controls.price.hasError('min')) {
+            <p class="product-form__error">Fehler:</p>
+            <p class="product-form__error">Der Preis darf nicht negativ sein.</p>
+          }
+        }
+      </div>
     </fieldset>
-    <button type="submit" class="btn btn--primary">
-      Produkt hinzufügen
-    </button>
+    <button type="submit" class="btn btn--primary">Produkt hinzufügen</button>
   </form>
 </section>
-für Fehlermeldungen:
-<p class="product-form__error">Fehler:</p>
-<p class="product-form__error">Deine Fehlermeldung</p>

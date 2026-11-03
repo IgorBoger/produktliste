@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -9,17 +9,22 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class ProductForm {
   productForm = new FormGroup({
-    id: new FormControl(0),
-    name: new FormControl('n/a'),
-    description: new FormControl('n/a'),
-    // specs: new FormControl('n/a'),
-    stock: new FormControl(0),
-    price: new FormControl(0.0),
-    // updatedAt: new FormControl('n/a')
+    name: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
+    description: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(15)],
+    }),
+    stock: new FormControl(0, { validators: [Validators.required, Validators.min(0)] }),
+    price: new FormControl(0.0, { validators: [Validators.required, Validators.min(0)] }),
   });
 
   onSubmit() {
     // TODO: Use output() with form value
-    console.log(this.productForm.value);
+    if (this.productForm.invalid) {
+      console.log(this.productForm.value);
+      this.productForm.markAllAsTouched();
+      return;
+    }
   }
 }
