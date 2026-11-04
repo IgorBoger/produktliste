@@ -28,6 +28,11 @@ export class Products {
     this.saveProducts();
   }
 
+  deleteProduct(id: number) {
+    this.productList.update((list) => list.filter((product) => product.id !== id));
+    this.saveProducts();
+  }
+
   private saveProducts() {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.productList()));

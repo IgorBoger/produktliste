@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Products } from '../../services/products';
 
 @Component({
@@ -10,6 +10,7 @@ import { Products } from '../../services/products';
 })
 export class ProductDetails {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   productService = inject(Products);
 
   detail = this.productService.productDetail;
@@ -24,13 +25,7 @@ export class ProductDetails {
   }
 
   deleteDetail() {
-    console.log('Detail gelöscht');
-    this.detail().id = 0;
-    this.detail().name = '';
-    this.detail().description = '';
-    this.detail().specs = '';
-    this.detail().stock = 0;
-    this.detail().price = 0;
-    this.detail().updatedAt = 'n/a';
+    this.productService.deleteProduct(this.detail().id);
+    this.router.navigate(['/']);
   }
 }

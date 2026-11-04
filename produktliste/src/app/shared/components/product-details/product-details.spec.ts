@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductDetails } from './product-details';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 describe('ProductDetails', () => {
   let component: ProductDetails;
@@ -19,5 +19,18 @@ describe('ProductDetails', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('deletes the displayed product and returns to the list', () => {
+    const service = component.productService;
+    const product = service.productList()[0];
+    service.productDetail.set(product);
+    const remaining = service.productList().filter((p) => p.id !== product.id);
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    const save = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {});
+    fixture.nativeElement.querySelector('.btn--delete').click();
+    expect(service.productList()).toEqual(remaining);
+    expect(save).toHaveBeenCalledWith('products', JSON.stringify(remaining));
+    expect(navigate).toHaveBeenCalledWith(['/']);
   });
 });
