@@ -18,6 +18,10 @@ export class Products {
     updatedAt: 'n/a',
   });
 
+  addProduct(product: Product) {
+    this.productList.update((list) => [...list, product]);
+  }
+
   setProductDetailsByName(name: string) {
     const tmpProduct = this.productList().find((product) => product.name === name);
     if (tmpProduct) this.productDetail.set(tmpProduct);

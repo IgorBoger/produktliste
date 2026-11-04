@@ -40,6 +40,23 @@
           <p class="product-form__error">Die Beschreibung muss mindestens 15 Zeichen lang sein.</p>
         }
       }
+
+      <label for="specs">Spezifikationen:</label>
+      <textarea id="specs" name="specs" rows="4" formControlName="specs"></textarea>
+
+      @if (productForm.controls.specs.touched) {
+        @if (productForm.controls.specs.hasError('required')) {
+          <p class="product-form__error">Fehler:</p>
+          <p class="product-form__error">Bitte gib die Spezifikationen ein.</p>
+        }
+
+        @if (productForm.controls.specs.hasError('minlength')) {
+          <p class="product-form__error">Fehler:</p>
+          <p class="product-form__error">
+            Die Spezifikationen müssen mindestens 15 Zeichen lang sein.
+          </p>
+        }
+      }
     </fieldset>
     <fieldset class="product-form__fieldset--hori">
       <legend>Stock &amp; Pricing</legend>
@@ -78,6 +95,8 @@
         }
       </div>
     </fieldset>
-    <button type="submit" class="btn btn--primary">Produkt hinzufügen</button>
+    <button type="submit" [disabled]="!productForm.valid" class="btn btn--primary">
+      Produkt hinzufügen
+    </button>
   </form>
 </section>
