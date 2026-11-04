@@ -1,6 +1,6 @@
 <section class="product-form">
   <header class="product-form__header">
-    <h1>Produkt erstellen</h1>
+    <h1>{{ headline }}</h1>
     <a href="" class="btn--close"></a>
   </header>
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
@@ -96,7 +96,7 @@
       </div>
     </fieldset>
     <button type="submit" [disabled]="!productForm.valid" class="btn btn--primary">
-      Produkt hinzufügen
+      {{ btn_text }}
     </button>
   </form>
 </section>

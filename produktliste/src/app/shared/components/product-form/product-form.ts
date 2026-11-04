@@ -32,6 +32,7 @@ export class ProductForm {
   onSubmit() {
     if (this.productForm.valid) {
       const values = this.productForm.getRawValue();
+      const id = this.router.url.split('/').pop();
 
       const product: Product = {
         id: Math.max(0, ...this.productService.productList().map((product) => product.id)) + 1,
@@ -47,5 +48,24 @@ export class ProductForm {
       this.productService.addProduct(product);
       this.router.navigate(['/']);
     }
+  }
+
+  headline = 'Produkt erstellen';
+  btn_text = 'Produkt hinzufügen';
+
+  ngOnInit() {
+    const id = this.router.url.split('/').pop();
+    if (id) {
+      const product = this.productService.productList().find((p) => p.id === +id);
+      if (product) {
+        this.setEditorDetails(product);
+      }
+    }
+  }
+
+  setEditorDetails(product: Product) {
+    this.headline = 'Produkt bearbeiten';
+    this.btn_text = 'Änderungen speichern';
+    this.productForm.patchValue(product);
   }
 }
