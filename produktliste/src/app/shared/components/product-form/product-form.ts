@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Products } from '../../services/products';
 import type { Product } from '../../interfaces/product';
 
@@ -12,10 +12,10 @@ import type { Product } from '../../interfaces/product';
 })
 export class ProductForm {
   router = inject(Router);
+  private route = inject(ActivatedRoute);
   productService = inject(Products);
 
   productForm = new FormGroup({
-    // id: new FormControl(0, { validators: [Validators.required, Validators.min(0)] }),
     name: new FormControl('', {
       validators: [Validators.required, Validators.minLength(3)],
     }),
@@ -32,7 +32,7 @@ export class ProductForm {
   onSubmit() {
     if (this.productForm.valid) {
       const values = this.productForm.getRawValue();
-      const id = this.router.url.split('/').pop();
+      const id = this.route.snapshot.paramMap.get('id');
 
       const product: Product = {
         id: Math.max(0, ...this.productService.productList().map((product) => product.id)) + 1,
@@ -44,8 +44,17 @@ export class ProductForm {
         updatedAt: new Date().toISOString(),
       };
 
-      console.log(this.productForm.value);
-      this.productService.addProduct(product);
+      if (id) {
+        const existingProduct = this.productService.productList().find((p) => p.id === +id);
+        if (existingProduct) {
+          product.id = existingProduct.id;
+          this.productService.updateProduct(product);
+        } else {
+          return;
+        }
+      } else {
+        this.productService.addProduct(product);
+      }
       this.router.navigate(['/']);
     }
   }
@@ -54,7 +63,7 @@ export class ProductForm {
   btn_text = 'Produkt hinzufügen';
 
   ngOnInit() {
-    const id = this.router.url.split('/').pop();
+    const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       const product = this.productService.productList().find((p) => p.id === +id);
       if (product) {
