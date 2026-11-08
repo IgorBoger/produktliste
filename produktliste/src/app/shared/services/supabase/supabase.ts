@@ -72,4 +72,14 @@ export class Supabase {
       this.supabase.removeChannel(this.productListInsertChannel);
     }
   }
+
+  async deleteProduct(id: number): Promise<boolean> {
+    const { data, error } = await this.supabase.from('products').delete().eq('id', id).select('id');
+    if (error || !data?.length) {
+      console.error('Failed to delete product:', error ?? 'Product not found');
+      return false;
+    }
+    await this.getAllProducts();
+    return true;
+  }
 }

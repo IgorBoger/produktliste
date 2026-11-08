@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Products } from '../../services/products';
+import { Supabase } from '../../services/supabase/supabase';
 
 @Component({
   imports: [RouterLink],
@@ -12,6 +13,7 @@ export class ProductDetails {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   productService = inject(Products);
+  supabase = inject(Supabase);
 
   detail = this.productService.productDetail;
 
@@ -24,8 +26,9 @@ export class ProductDetails {
     }
   }
 
-  deleteDetail() {
-    this.productService.deleteProduct(this.detail().id);
-    this.router.navigate(['/']);
+  async deleteDetail() {
+    const deleted = await this.supabase.deleteProduct(this.detail().id);
+    if (!deleted) return;
+    await this.router.navigate(['/']);
   }
 }

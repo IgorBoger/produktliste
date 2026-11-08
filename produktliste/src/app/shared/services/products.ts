@@ -20,10 +20,6 @@ export class Products {
     updated_at: 'n/a',
   });
 
-  deleteProduct(id: number) {
-    this.productList.update((list) => list.filter((product) => product.id !== id));
-  }
-
   setProductDetailsById(id: number) {
     const tmpProduct = this.productList().find((product) => product.id === id);
     if (tmpProduct) this.productDetail.set(tmpProduct);
