@@ -32,7 +32,7 @@
             }
           </td>
           <td class="text-right"><a class="btn--view" aria-label="Details anzeigen"></a></td>
-          <td class="text-right">{{ product.updatedAt | date: 'dd.MM.yyyy' : undefined : 'de' }}</td>
+          <td class="text-right">{{ product.updated_at | date: 'dd.MM.yyyy' : undefined : 'de' }}</td>
         </tr>
       } @empty {
         <tr>

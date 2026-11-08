@@ -3,6 +3,7 @@ import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { Products } from '../../services/products';
 import type { Product } from '../../interfaces/product';
+import { ProductModel } from '../../models/productmodel';
 
 @Component({
   imports: [ReactiveFormsModule],
@@ -17,37 +18,44 @@ export class ProductForm {
 
   productForm = new FormGroup({
     name: new FormControl('', {
+      nonNullable: true,
       validators: [Validators.required, Validators.minLength(3)],
     }),
     description: new FormControl('', {
+      nonNullable: true,
       validators: [Validators.required, Validators.minLength(15)],
     }),
     specs: new FormControl('', {
+      nonNullable: true,
       validators: [Validators.required, Validators.minLength(15)],
     }),
-    stock: new FormControl(0, { validators: [Validators.required, Validators.min(0)] }),
-    price: new FormControl(0.0, { validators: [Validators.required, Validators.min(0)] }),
+    stock: new FormControl(0, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0)],
+    }),
+    price: new FormControl(0.0, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(0)],
+    }),
   });
 
   onSubmit() {
     if (this.productForm.valid) {
       const values = this.productForm.getRawValue();
       const id = this.route.snapshot.paramMap.get('id');
-
-      const product: Product = {
-        id: Math.max(0, ...this.productService.productList().map((product) => product.id)) + 1,
-        name: values.name ?? '',
-        description: values.description ?? '',
-        specs: values.specs ?? '',
-        stock: values.stock ?? 0,
-        price: values.price ?? 0,
-        updatedAt: new Date().toISOString(),
-      };
+      const now = new Date().toISOString();
+      const product = new ProductModel({
+        ...values,
+        id: Math.max(0, ...this.productService.productList().map((p) => p.id)) + 1,
+        created_at: now,
+        updated_at: now,
+      });
 
       if (id) {
         const existingProduct = this.productService.productList().find((p) => p.id === +id);
         if (existingProduct) {
           product.id = existingProduct.id;
+          product.created_at = existingProduct.created_at;
           this.productService.updateProduct(product);
         } else {
           return;
@@ -75,6 +83,6 @@ export class ProductForm {
   setEditorDetails(product: Product) {
     this.headline = 'Produkt bearbeiten';
     this.btn_text = 'Änderungen speichern';
-    this.productForm.patchValue(product);
+    this.productForm.patchValue(new ProductModel(product));
   }
 }
