@@ -1,10 +1,12 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Product } from '../interfaces/product';
+import { Supabase } from './supabase/supabase';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Products {
+  private readonly supabase = inject(Supabase);
   private readonly storageKey = 'products';
   productList = signal<Product[]>([]);
 

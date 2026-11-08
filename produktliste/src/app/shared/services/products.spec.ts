@@ -1,11 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { Products } from './products';
+import { Supabase } from './supabase/supabase';
 
 describe('Products', () => {
   let service: Products;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({ providers: [Supabase] });
     service = TestBed.inject(Products);
   });
 
@@ -19,7 +20,7 @@ describe('Products', () => {
     service.deleteProduct(service.productList()[0].id);
     expect(save).toHaveBeenCalledWith('products', JSON.stringify(remaining));
     vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify(remaining));
-    expect(new Products().productList()).toEqual(remaining);
+    expect(TestBed.runInInjectionContext(() => new Products()).productList()).toEqual(remaining);
   });
 
   it('keeps an empty list after deleting the last product and reloading', () => {
@@ -28,6 +29,6 @@ describe('Products', () => {
     service.deleteProduct(service.productList()[0].id);
     expect(save).toHaveBeenCalledWith('products', '[]');
     vi.spyOn(Storage.prototype, 'getItem').mockReturnValue('[]');
-    expect(new Products().productList()).toEqual([]);
+    expect(TestBed.runInInjectionContext(() => new Products()).productList()).toEqual([]);
   });
 });

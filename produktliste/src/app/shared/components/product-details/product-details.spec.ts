@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductDetails } from './product-details';
 import { provideRouter, Router } from '@angular/router';
+import { Supabase } from '../../services/supabase/supabase';
 
 describe('ProductDetails', () => {
   let component: ProductDetails;
@@ -9,7 +10,7 @@ describe('ProductDetails', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ProductDetails],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), Supabase],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductDetails);
