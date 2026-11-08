@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Products } from '../../services/products';
 import { Supabase } from '../../services/supabase/supabase';
 import type { Product } from '../../interfaces/product';
 import { ProductModel } from '../../models/productmodel';
@@ -15,7 +14,6 @@ import { ProductModel } from '../../models/productmodel';
 export class ProductForm {
   router = inject(Router);
   private route = inject(ActivatedRoute);
-  productService = inject(Products);
   supabase = inject(Supabase);
 
   productForm = new FormGroup({
@@ -48,13 +46,13 @@ export class ProductForm {
       const now = new Date().toISOString();
       const product = new ProductModel({
         ...values,
-        id: Math.max(0, ...this.productService.productList().map((p) => p.id)) + 1,
+        id: Math.max(0, ...this.supabase.productList().map((p) => p.id)) + 1,
         created_at: now,
         updated_at: now,
       });
 
       if (id) {
-        const existingProduct = this.productService.productList().find((p) => p.id === +id);
+        const existingProduct = this.supabase.productList().find((p) => p.id === +id);
         if (existingProduct) {
           product.id = existingProduct.id;
           product.created_at = existingProduct.created_at;
@@ -77,7 +75,7 @@ export class ProductForm {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      const product = this.productService.productList().find((p) => p.id === +id);
+      const product = this.supabase.productList().find((p) => p.id === +id);
       if (product) {
         this.setEditorDetails(product);
       }

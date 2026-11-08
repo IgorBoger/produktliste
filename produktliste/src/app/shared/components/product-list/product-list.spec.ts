@@ -8,6 +8,8 @@ describe('ProductList', () => {
   let fixture: ComponentFixture<ProductList>;
 
   beforeEach(async () => {
+    vi.spyOn(Supabase.prototype, 'getAllProducts').mockResolvedValue(undefined);
+    vi.spyOn(Supabase.prototype, 'listensForChanges').mockImplementation(() => {});
     await TestBed.configureTestingModule({
       imports: [ProductList],
       providers: [provideRouter([]), Supabase],

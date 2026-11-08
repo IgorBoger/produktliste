@@ -10,11 +10,28 @@ export class Supabase {
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
 
   products = signal<Product[]>([]);
+
+  productList = this.products;
+  productDetail = signal<Product>({
+    id: 0,
+    created_at: 'n/a',
+    name: 'n/a',
+    description: 'n/a',
+    specs: 'n/a',
+    stock: 0,
+    price: 0,
+    updated_at: 'n/a',
+  });
   productListInsertChannel: RealtimeChannel | undefined;
 
   constructor() {
     this.getAllProducts();
     this.listensForChanges();
+  }
+
+  setProductDetailsById(id: number) {
+    const tmpProduct = this.productList().find((product) => product.id === id);
+    if (tmpProduct) this.productDetail.set(tmpProduct);
   }
 
   async getAllProducts() {

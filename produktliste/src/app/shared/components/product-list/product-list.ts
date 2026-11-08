@@ -1,7 +1,7 @@
 import { RouterLink } from '@angular/router';
 import { Component, inject } from '@angular/core';
 import { CurrencyPipe, DatePipe, registerLocaleData } from '@angular/common';
-import { Products } from '../../services/products';
+import { Supabase } from '../../services/supabase/supabase';
 import localeDe from '@angular/common/locales/de';
 registerLocaleData(localeDe);
 
@@ -12,6 +12,6 @@ registerLocaleData(localeDe);
   templateUrl: './product-list.html',
 })
 export class ProductList {
-  productService = inject(Products);
-  list = this.productService.productList;
+  supabase = inject(Supabase);
+  list = this.supabase.productList;
 }

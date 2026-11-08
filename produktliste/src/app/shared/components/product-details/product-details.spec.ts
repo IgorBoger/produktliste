@@ -1,3 +1,4 @@
+import { ProductModel } from '../../models/productmodel';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductDetails } from './product-details';
 import { provideRouter, Router } from '@angular/router';
@@ -8,6 +9,8 @@ describe('ProductDetails', () => {
   let fixture: ComponentFixture<ProductDetails>;
 
   beforeEach(async () => {
+    vi.spyOn(Supabase.prototype, 'getAllProducts').mockResolvedValue(undefined);
+    vi.spyOn(Supabase.prototype, 'listensForChanges').mockImplementation(() => {});
     await TestBed.configureTestingModule({
       imports: [ProductDetails],
       providers: [provideRouter([]), Supabase],
@@ -22,16 +25,20 @@ describe('ProductDetails', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deletes the displayed product and returns to the list', () => {
-    const service = component.productService;
-    const product = service.productList()[0];
-    service.productDetail.set(product);
-    const remaining = service.productList().filter((p) => p.id !== product.id);
+  it('deletes the displayed product through Supabase and then navigates', async () => {
+    const service = component.supabase;
+    service.productDetail.set(new ProductModel({ id: 25, name: 'Test product' }));
+    const remove = vi.spyOn(service, 'deleteProduct').mockResolvedValue(true);
     const navigate = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
-    const save = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {});
-    fixture.nativeElement.querySelector('.btn--delete').click();
-    expect(service.productList()).toEqual(remaining);
-    expect(save).toHaveBeenCalledWith('products', JSON.stringify(remaining));
+    await component.deleteDetail();
+    expect(remove).toHaveBeenCalledWith(25);
     expect(navigate).toHaveBeenCalledWith(['/']);
+  });
+
+  it('stays on the details page when deletion fails', async () => {
+    vi.spyOn(component.supabase, 'deleteProduct').mockResolvedValue(false);
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigate');
+    await component.deleteDetail();
+    expect(navigate).not.toHaveBeenCalled();
   });
 });
