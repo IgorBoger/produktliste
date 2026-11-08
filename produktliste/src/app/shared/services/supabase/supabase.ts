@@ -45,7 +45,7 @@ export class Supabase {
   }
 
   async addProduct(product: ProductModel) {
-    console.log(product.getClientAddJson());
+    console.log('Adding product:', product.getClientAddJson());
     const product_data = product.getClientAddJson();
     const { error } = await this.supabase.from('products').insert(product_data);
     if (error) {
@@ -78,7 +78,11 @@ export class Supabase {
     if (this.productListInsertChannel) return;
     this.productListInsertChannel = this.supabase
       .channel('custom-all-channel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, (payload) => {
+        if (payload.eventType === 'DELETE') {
+          console.log('Product deleted:', payload.old['id']);
+        }
+
         void this.getAllProducts();
       })
       .subscribe();
@@ -91,6 +95,7 @@ export class Supabase {
   }
 
   async deleteProduct(id: number): Promise<boolean> {
+    console.log('Deleting product with ID:', id);
     const { data, error } = await this.supabase.from('products').delete().eq('id', id).select('id');
     if (error || !data?.length) {
       console.error('Failed to delete product:', error ?? 'Product not found');
