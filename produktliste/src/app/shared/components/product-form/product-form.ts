@@ -58,7 +58,8 @@ export class ProductForm {
         if (existingProduct) {
           product.id = existingProduct.id;
           product.created_at = existingProduct.created_at;
-          this.productService.updateProduct(product);
+          const saved = await this.supabase.updateProduct(product);
+          if (!saved) return;
         } else {
           return;
         }

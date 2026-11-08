@@ -10,7 +10,12 @@ export class Supabase {
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
 
   products = signal<Product[]>([]);
-  channels: RealtimeChannel | undefined;
+  productListInsertChannel: RealtimeChannel | undefined;
+
+  constructor() {
+    this.getAllProducts();
+    this.listensForChanges();
+  }
 
   async getAllProducts() {
     const { data: products, error } = await this.supabase.from('products').select('*');
@@ -34,4 +39,37 @@ export class Supabase {
     return true;
   }
 
+  async updateProduct(product: Product): Promise<boolean> {
+    const { id, created_at, ...changes } = product;
+
+    const { data, error } = await this.supabase
+      .from('products')
+      .update({ ...changes, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select('id');
+
+    if (error || !data?.length) {
+      console.error('Failed to update product:', error ?? 'Product not found');
+      return false;
+    }
+
+    await this.getAllProducts();
+    return true;
+  }
+
+  listensForChanges() {
+    if (this.productListInsertChannel) return;
+    this.productListInsertChannel = this.supabase
+      .channel('custom-all-channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        void this.getAllProducts();
+      })
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    if (this.productListInsertChannel) {
+      this.supabase.removeChannel(this.productListInsertChannel);
+    }
+  }
 }

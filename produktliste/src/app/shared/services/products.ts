@@ -20,10 +20,6 @@ export class Products {
     updated_at: 'n/a',
   });
 
-  updateProduct(product: Product) {
-    this.productList.update((list) => list.map((p) => (p.id === product.id ? product : p)));
-  }
-
   deleteProduct(id: number) {
     this.productList.update((list) => list.filter((product) => product.id !== id));
   }
@@ -31,9 +27,5 @@ export class Products {
   setProductDetailsById(id: number) {
     const tmpProduct = this.productList().find((product) => product.id === id);
     if (tmpProduct) this.productDetail.set(tmpProduct);
-  }
-
-  constructor() {
-    this.supabase.getAllProducts();
   }
 }
