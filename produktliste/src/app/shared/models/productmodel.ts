@@ -20,4 +20,14 @@ export class ProductModel implements Product {
     this.price = data.price ?? 0;
     this.updated_at = data.updated_at ?? '';
   }
+
+  getClientAddJson() {
+    return {
+      name: this.name,
+      description: this.description,
+      specs: this.specs,
+      stock: this.stock,
+      price: this.price,
+    };
+  }
 }

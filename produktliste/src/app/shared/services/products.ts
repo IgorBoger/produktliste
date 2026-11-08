@@ -7,7 +7,6 @@ import { Supabase } from './supabase/supabase';
 })
 export class Products {
   private readonly supabase = inject(Supabase);
-  private readonly storageKey = 'products';
   productList = this.supabase.products;
 
   productDetail = signal<Product>({
@@ -21,27 +20,12 @@ export class Products {
     updated_at: 'n/a',
   });
 
-  addProduct(product: Product) {
-    this.productList.update((list) => [...list, product]);
-    this.saveProducts();
-  }
-
   updateProduct(product: Product) {
     this.productList.update((list) => list.map((p) => (p.id === product.id ? product : p)));
-    this.saveProducts();
   }
 
   deleteProduct(id: number) {
     this.productList.update((list) => list.filter((product) => product.id !== id));
-    this.saveProducts();
-  }
-
-  private saveProducts() {
-    try {
-      localStorage.setItem(this.storageKey, JSON.stringify(this.productList()));
-    } catch (error) {
-      console.warn('Products could not be saved to localStorage.', error);
-    }
   }
 
   setProductDetailsById(id: number) {

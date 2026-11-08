@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Products } from '../../services/products';
+import { Supabase } from '../../services/supabase/supabase';
 import type { Product } from '../../interfaces/product';
 import { ProductModel } from '../../models/productmodel';
 
@@ -15,6 +16,7 @@ export class ProductForm {
   router = inject(Router);
   private route = inject(ActivatedRoute);
   productService = inject(Products);
+  supabase = inject(Supabase);
 
   productForm = new FormGroup({
     name: new FormControl('', {
@@ -39,7 +41,7 @@ export class ProductForm {
     }),
   });
 
-  onSubmit() {
+  async onSubmit() {
     if (this.productForm.valid) {
       const values = this.productForm.getRawValue();
       const id = this.route.snapshot.paramMap.get('id');
@@ -61,9 +63,10 @@ export class ProductForm {
           return;
         }
       } else {
-        this.productService.addProduct(product);
+        const saved = await this.supabase.addProduct(product);
+        if (!saved) return;
       }
-      this.router.navigate(['/']);
+      await this.router.navigate(['/']);
     }
   }
 
