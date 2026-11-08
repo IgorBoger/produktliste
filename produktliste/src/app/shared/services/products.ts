@@ -8,7 +8,6 @@ import { Supabase } from './supabase/supabase';
 export class Products {
   private readonly supabase = inject(Supabase);
   private readonly storageKey = 'products';
-  // productList = signal<Product[]>([]);
   productList = this.supabase.products;
 
   productDetail = signal<Product>({
@@ -45,55 +44,8 @@ export class Products {
     }
   }
 
-  private loadProducts() {
-    try {
-      const storedProducts = localStorage.getItem(this.storageKey);
-      if (storedProducts === null) return;
-      const products: unknown = JSON.parse(storedProducts);
-      if (this.isProductList(products)) {
-        this.productList.set(products);
-      }
-    } catch (error) {
-      console.warn('Products could not be loaded from localStorage.', error);
-    }
-  }
-
-  private isProductList(value: unknown): value is Product[] {
-    return Array.isArray(value) && value.every((item) => this.isProduct(item));
-  }
-
-  private isProduct(value: unknown): value is Product {
-    if (value === null || typeof value !== 'object') {
-      return false;
-    }
-    const product = value as Record<string, unknown>;
-    return (
-      this.hasValidProductId(product) &&
-      this.hasValidProductTexts(product) &&
-      this.hasValidProductNumbers(product)
-    );
-  }
-
-  private hasValidProductId(product: Record<string, unknown>): boolean {
-    const id = product['id'];
-    return typeof id === 'number' && Number.isInteger(id) && id > 0;
-  }
-
-  private hasValidProductTexts(product: Record<string, unknown>): boolean {
-    const fields = ['created_at', 'name', 'description', 'specs', 'updated_at'];
-    return fields.every((field) => typeof product[field] === 'string');
-  }
-
-  private hasValidProductNumbers(product: Record<string, unknown>): boolean {
-    const fields = ['stock', 'price'];
-    return fields.every((field) => {
-      const value = product[field];
-      return typeof value === 'number' && Number.isFinite(value) && value >= 0;
-    });
-  }
-
-  setProductDetailsByName(name: string) {
-    const tmpProduct = this.productList().find((product) => product.name === name);
+  setProductDetailsById(id: number) {
+    const tmpProduct = this.productList().find((product) => product.id === id);
     if (tmpProduct) this.productDetail.set(tmpProduct);
   }
 

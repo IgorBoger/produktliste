@@ -12,7 +12,11 @@
     </thead>
     <tbody>
       @for (product of list(); track product.id; let odd = $odd) {
-        <tr role="link" [class.dark-row]="odd" [routerLink]="['/details', product.name]">
+        <tr
+          role="link"
+          [class.dark-row]="odd"
+          [routerLink]="['/details', product.id, product.name.toLowerCase().replaceAll(' ', '-')]"
+        >
           <td>{{ product.name }}</td>
           <td>{{ product.specs }}</td>
           <td class="text-right">
@@ -32,7 +36,9 @@
             }
           </td>
           <td class="text-right"><a class="btn--view" aria-label="Details anzeigen"></a></td>
-          <td class="text-right">{{ product.updated_at | date: 'dd.MM.yyyy' : undefined : 'de' }}</td>
+          <td class="text-right">
+            {{ product.updated_at | date: 'dd.MM.yyyy' : undefined : 'de' }}
+          </td>
         </tr>
       } @empty {
         <tr>

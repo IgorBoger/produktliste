@@ -16,10 +16,10 @@ export class ProductDetails {
   detail = this.productService.productDetail;
 
   ngOnInit() {
-    let currentName = this.route.snapshot.paramMap.get('name');
-    if (currentName) {
-      console.log('Current Name:', currentName);
-      this.productService.setProductDetailsByName(currentName);
+    let currentId = Number(this.route.snapshot.paramMap.get('id'));
+    if (currentId) {
+      console.log('Current ID:', currentId);
+      this.productService.setProductDetailsById(currentId);
       console.log(this.productService.productDetail);
     }
   }
